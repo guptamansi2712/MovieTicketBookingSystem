@@ -22,43 +22,43 @@ public class AdminController {
 
     @PostMapping("/cities")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createCity(@Valid @RequestBody CreateCityRequest request) {
+    public Map<String, Object> createCity(@Valid @RequestBody CreateCityRequest request) {
         return adminService.createCity(request);
     }
 
     @PostMapping("/theaters")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createTheater(@Valid @RequestBody CreateTheaterRequest request) {
+    public Map<String, Object> createTheater(@Valid @RequestBody CreateTheaterRequest request) {
         return adminService.createTheater(request);
     }
 
     @PostMapping("/movies")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createMovie(@Valid @RequestBody CreateMovieRequest request) {
+    public Map<String, Object> createMovie(@Valid @RequestBody CreateMovieRequest request) {
         return adminService.createMovie(request);
     }
 
     @PostMapping("/pricing-tiers")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createPricingTier(@Valid @RequestBody CreatePricingTierRequest request) {
+    public Map<String, Object> createPricingTier(@Valid @RequestBody CreatePricingTierRequest request) {
         return adminService.createPricingTier(request);
     }
 
     @PostMapping("/refund-policies")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createRefundPolicy(@Valid @RequestBody CreateRefundPolicyRequest request) {
+    public Map<String, Object> createRefundPolicy(@Valid @RequestBody CreateRefundPolicyRequest request) {
         return adminService.createRefundPolicy(request);
     }
 
     @PostMapping("/discount-codes")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createDiscountCode(@Valid @RequestBody CreateDiscountCodeRequest request) {
+    public Map<String, Object> createDiscountCode(@Valid @RequestBody CreateDiscountCodeRequest request) {
         return adminService.createDiscountCode(request);
     }
 
     @PostMapping("/shows")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> createShow(@Valid @RequestBody CreateShowRequest request) {
+    public Map<String, Object> createShow(@Valid @RequestBody CreateShowRequest request) {
         return adminService.createShow(request);
     }
 }

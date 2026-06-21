@@ -28,23 +28,23 @@ public class CustomerController {
 
     @PostMapping("/holds")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> holdSeats(@Valid @RequestBody HoldSeatsRequest request) {
+    public Map<String, Object> holdSeats(@Valid @RequestBody HoldSeatsRequest request) {
         return bookingService.holdSeats(currentUser.id(), request.showId(), request.seatIds());
     }
 
     @PostMapping("/bookings")
     @ResponseStatus(HttpStatus.CREATED)
-    Map<String, Object> confirmBooking(@Valid @RequestBody ConfirmBookingRequest request) {
+    public Map<String, Object> confirmBooking(@Valid @RequestBody ConfirmBookingRequest request) {
         return bookingService.confirmBooking(currentUser.id(), request.holdToken(), request.discountCode(), request.paymentReference());
     }
 
     @PostMapping("/bookings/{bookingId}/cancel")
-    Map<String, Object> cancelBooking(@PathVariable long bookingId) {
+    public Map<String, Object> cancelBooking(@PathVariable long bookingId) {
         return bookingService.cancelBooking(currentUser.id(), bookingId);
     }
 
     @GetMapping("/bookings")
-    List<Map<String, Object>> history() {
+    public List<Map<String, Object>> history() {
         return bookingService.history(currentUser.id());
     }
 }

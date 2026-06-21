@@ -19,17 +19,17 @@ public class CatalogController {
     }
 
     @GetMapping("/cities")
-    List<Map<String, Object>> cities() {
+    public List<Map<String, Object>> cities() {
         return catalogService.cities();
     }
 
     @GetMapping("/shows")
-    List<Map<String, Object>> shows(@RequestParam(required = false) Long cityId) {
+    public List<Map<String, Object>> shows(@RequestParam(required = false) Long cityId) {
         return catalogService.shows(cityId);
     }
 
     @GetMapping("/shows/{showId}/seats")
-    List<Map<String, Object>> availability(@PathVariable long showId) {
+    public List<Map<String, Object>> availability(@PathVariable long showId) {
         return catalogService.availability(showId);
     }
 }
