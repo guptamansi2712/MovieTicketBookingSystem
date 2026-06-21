@@ -1,0 +1,591 @@
+{
+  "info": {
+    "_postman_id": "9d7e72a8-7fc3-4e1f-8a61-5f14bb546f1f",
+    "name": "Movie Ticket Booking System",
+    "description": "REST API collection for the Spring Boot Movie Ticket Booking System. Uses X-User-Id header for simple role-based auth. Import this file into Postman, start the app locally, then run requests in order for the happy path.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "adminUserId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "customerUserId",
+      "value": "2",
+      "type": "string"
+    },
+    {
+      "key": "cityId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "screenId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "movieId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "pricingTierId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "refundPolicyId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "showId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "holdToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bookingId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "List Cities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/catalog/cities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "catalog",
+                "cities"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Shows",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/catalog/shows",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "catalog",
+                "shows"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Shows By City",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/catalog/shows?cityId={{cityId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "catalog",
+                "shows"
+              ],
+              "query": [
+                {
+                  "key": "cityId",
+                  "value": "{{cityId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Show Seat Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/catalog/shows/{{showId}}/seats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "catalog",
+                "shows",
+                "{{showId}}",
+                "seats"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Create City",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.id) pm.collectionVariables.set('cityId', response.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bengaluru\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/cities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "cities"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Theater With Screen And Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.screenId) pm.collectionVariables.set('screenId', response.screenId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cityId\": {{cityId}},\n  \"name\": \"PVR Orion\",\n  \"address\": \"Rajajinagar, Bengaluru\",\n  \"screenName\": \"Screen 1\",\n  \"seats\": [\n    { \"rowLabel\": \"A\", \"seatNumber\": 1, \"seatTier\": \"REGULAR\" },\n    { \"rowLabel\": \"A\", \"seatNumber\": 2, \"seatTier\": \"REGULAR\" },\n    { \"rowLabel\": \"B\", \"seatNumber\": 1, \"seatTier\": \"PREMIUM\" },\n    { \"rowLabel\": \"B\", \"seatNumber\": 2, \"seatTier\": \"PREMIUM\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/theaters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "theaters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Movie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.id) pm.collectionVariables.set('movieId', response.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Interstellar\",\n  \"language\": \"English\",\n  \"durationMinutes\": 169,\n  \"certificate\": \"UA\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/movies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "movies"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Pricing Tier",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.id) pm.collectionVariables.set('pricingTierId', response.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Evening Prime\",\n  \"regularPrice\": 220.00,\n  \"premiumPrice\": 350.00,\n  \"weekendMultiplier\": 1.25\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/pricing-tiers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "pricing-tiers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Refund Policy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.id) pm.collectionVariables.set('refundPolicyId', response.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Full refund until 2 hours before show\",\n  \"cutoffMinutesBeforeShow\": 120,\n  \"refundPercent\": 100.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/refund-policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "refund-policies"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Discount Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"WELCOME20\",\n  \"percentOff\": 20.00,\n  \"validFrom\": \"2026-06-21T00:00:00+05:30\",\n  \"validUntil\": \"2026-12-31T23:59:59+05:30\",\n  \"maxUses\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/discount-codes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "discount-codes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.id) pm.collectionVariables.set('showId', response.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{adminUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"movieId\": {{movieId}},\n  \"screenId\": {{screenId}},\n  \"startsAt\": \"2026-07-01T19:30:00+05:30\",\n  \"pricingTierId\": {{pricingTierId}},\n  \"refundPolicyId\": {{refundPolicyId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/shows",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "shows"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Hold Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.holdToken) pm.collectionVariables.set('holdToken', response.holdToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{customerUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [1, 2]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customer/holds",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "customer",
+                "holds"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirm Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.bookingId) pm.collectionVariables.set('bookingId', response.bookingId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{customerUserId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holdToken\": \"{{holdToken}}\",\n  \"discountCode\": \"WELCOME10\",\n  \"paymentReference\": \"pay_demo_123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customer/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "customer",
+                "bookings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Booking History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "{{customerUserId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customer/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "customer",
+                "bookings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "{{customerUserId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customer/bookings/{{bookingId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "customer",
+                "bookings",
+                "{{bookingId}}",
+                "cancel"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
